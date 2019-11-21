@@ -10,3 +10,8 @@ export class AppController {
     return this.appService.getHello();
   }
 }
+
+// tslint:disable-next-line:no-empty
+if (0){
+
+}
