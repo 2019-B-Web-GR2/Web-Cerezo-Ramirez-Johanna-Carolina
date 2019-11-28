@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, InternalServerErrorException, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, InternalServerErrorException, Param, Post, Query, Headers} from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller('pepito') // Decorador puede tener o no parametros. Aqui esta el segmento de la URL
@@ -28,6 +28,61 @@ export class AppController {
   private obtenerSegundos(): number { // esta funcion no se ve desde fuera del servidor porque no tiene metodos Post/Get/etc
     return new Date().getSeconds();
   }
+
+  // Parametros de consulta
+  // @ts-ignore
+  @Get('bienvenida')
+  public bienvenida(
+    @Query() parametrosDeConsulta: ObjetoBienvenida,
+    @Query('nombre') nombre: string,
+    @Query('numero') numeroUsuario: number,
+    @Query('casado') userCasado: boolean,
+  ): string {
+      console.log(parametrosDeConsulta);
+      // template strings usan tildes invertidas y se escibre: `Mensaje $variable`
+      return `Mensaje ${parametrosDeConsulta.nombre} Numero: ${parametrosDeConsulta.numero} Casado: ${parametrosDeConsulta.casado}`;
+  }
+
+  // Parametros de ruta
+  @Get('inscripcion-curso/:idcurso/:cedula')
+  public inscripcionCurso(
+    @Param() parametrosDeRuta: ObjetoInscripcion,
+    @Param('idCurso') idCurso: string,
+    @Param('cedula') cedula: string,
+  ): string {
+    console.log(parametrosDeRuta);
+    return `Te inscribiste al curso: ${idCurso}\n ${cedula}`;
+  }
+
+  // Body params
+  @Post('almorzar')
+  @HttpCode(200)
+  public almorzar(
+    @Body() parametrosDeCuerpo,
+  ): string {
+    console.log(parametrosDeCuerpo);
+    return `Te inscribiste al curso ${parametrosDeCuerpo}`;
+  }
+
+  @Get('obtener-cabeceras')
+  obtenerCabeceras(
+    @Headers() cabeceras,
+  ) {
+    console.log(cabeceras);
+    return `Las cabeceras son: ${cabeceras}`;
+  }
+
+}
+
+interface ObjetoBienvenida {
+  nombre?: string;
+  numero?: string;
+  casado?: string;
+}
+
+interface ObjetoInscripcion {
+  idCurso: string;
+  cedula: string;
 }
 
 // // tslint:disable-next-line:no-empty
