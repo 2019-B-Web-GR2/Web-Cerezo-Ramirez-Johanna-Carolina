@@ -1,14 +1,34 @@
-import { Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, Index, PrimaryGeneratedColumn} from "typeorm";
 
-@Entity('usuario_web')  //nombre de la entidad en la base de datos
+@Entity('usuario_web')
 export class UsuarioEntity {
-  //aqui se definen indices, claves primarias, columnas, tipos de las columnas, etc, ect
-  // el estandar para base de datos es todo minusculas y separado con guiones bajos 
   @PrimaryGeneratedColumn({
     type: 'int',
-    unsigned: true, // que sea un entero psoitivo es decir sin signo
+    unsigned: true,
     name: 'id_web',
-    comment: 'Identificador de la tabla'
+    comment: 'Identificador de la tabla usuario'
   })
   id: number;
+
+  @Index({
+    unique: false,
+  })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    name: 'nombre',
+    comment: 'Nombre de la tabla usuario'
+  })
+  nombre?: string;
+
+  @Index({
+    unique: true,
+  })
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    name: 'cedula',
+    comment: 'Cedula de la tabla usuario'
+  })
+  cedula: string;
 }

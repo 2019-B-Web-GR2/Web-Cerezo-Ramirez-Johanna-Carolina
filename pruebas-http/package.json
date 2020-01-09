@@ -22,10 +22,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@hapi/joi": "^17.0.0",
     "@nestjs/common": "^6.7.2",
     "@nestjs/core": "^6.7.2",
     "@nestjs/platform-express": "^6.7.2",
     "@nestjs/typeorm": "^6.2.0",
+    "class-validator": "^0.11.0",
+    "express-session-file-store": "^1.0.2",
+    "hapi": "^18.1.0",
     "mysql": "^2.17.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",

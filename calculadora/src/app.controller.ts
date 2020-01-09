@@ -88,7 +88,7 @@ export class AppController {
     const result3: number = n5 / n6;
 
     global = global - (result2 + result3 + result)
-    if (global <= 0) {
+    if (global <= 0 || global === 0) {
       global = 100
       return `El resultado de la división con query es ${result}
             El resultado de la división con body es ${result2}
