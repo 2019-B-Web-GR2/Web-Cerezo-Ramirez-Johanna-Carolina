@@ -7,20 +7,19 @@ import {
   Param,
   Post,
   Put,
-  Query,
+  Query, Req, Res,
   Session,
-  UnauthorizedException
-} from "@nestjs/common";
-import {UsuarioService} from "./usuario.service";
-import {UsuarioEntity} from "./usuario.entity";
-import {DeleteResult} from "typeorm";
+  UnauthorizedException,
+} from '@nestjs/common';
+import {UsuarioService} from './usuario.service';
+import {UsuarioEntity} from './usuario.entity';
+import {DeleteResult} from 'typeorm';
 import * as Joi from '@hapi/joi';
-import {UsuarioCreateDto} from "./usuario.create-dto";
-import {validate} from "class-validator";
-import {UsuarioUpdateDto} from "./usuario.update-dto";
+import {UsuarioCreateDto} from './usuario.create-dto';
+import {validate} from 'class-validator';
+import {UsuarioUpdateDto} from './usuario.update-dto';
 
 // JS const Joi = require('@hapi/joi');
-
 
 @Controller('usuario')
 export class UsuarioController {
@@ -29,28 +28,38 @@ export class UsuarioController {
   ) {
 
   }
+  @Get('ejemplo-ejs')
+  ejemploejs(
+    @Res() res,
+  ) {
+    res.render('ejemplo', {
+      datos: {
+      nombre: 'Adrian',
+      },
+    });
+  }
 
   @Post('login')
   login(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Session() session
+    @Session() session,
   ) {
     console.log('Session', session);
     if (username === 'adrian' && password === '1234') {
       session.usuario = {
         nombre: 'adrian',
         userId: 1,
-        roles: ['Administrador']
-      }
+        roles: ['Administrador'],
+      };
       return 'ok';
     }
     if (username === 'vicente' && password === '1234') {
       session.usuario = {
         nombre: 'vicente',
         userId: 2,
-        roles: ['Supervisor']
-      }
+        roles: ['Supervisor'],
+      };
       return 'ok';
     }
     throw new BadRequestException('No envia credenciales');
@@ -58,11 +67,26 @@ export class UsuarioController {
 
   @Get('sesion')
   sesion(
-    @Session() session
+    @Session() session,
   ) {
-    return session;
+    return `
+    <html>
+            <head> <title>EPN</title> </head>
+            <body>
+            <h1> Mi primera pagina web ${session.usuario ? session.usuario.nombre : 'No definido'} </h1>
+    </body>
+    </html>`;
   }
 
+  @Get('logout')
+  logout(
+    @Session() session,
+    @Req() req,
+  ) {
+    session.usuario = undefined;
+    req.session.destroy();
+    return 'Deslogueado';
+  }
   @Get('hola')
   hola(): string {
     return `
@@ -70,10 +94,10 @@ export class UsuarioController {
         <head> <title>EPN</title> </head>
         <body>
         <h1> Mi primera pagina web </h1>
+
 </body>
 </html>`;
   }
-
 
   // GET /modelo/:id
   @Get(':id')
@@ -82,7 +106,7 @@ export class UsuarioController {
   ): Promise<UsuarioEntity | undefined> {
     return this._usuarioService
       .encontrarUno(
-        Number(identificador)
+        Number(identificador),
       );
   }
 
@@ -91,12 +115,12 @@ export class UsuarioController {
     @Body() usuario: UsuarioEntity,
     @Session() session,
   ): Promise<UsuarioEntity> {
-    const administrador=session.usuario.roles.find(
+    const administrador = session.usuario.roles.find(
       rol => {
-        return rol ==='Administrador'
-      }
-    )
-    if(!administrador){
+        return rol === 'Administrador';
+      },
+    );
+    if (!administrador) {
       throw new BadRequestException('Error usted no cuenta con los suficientes permisos');
     }
     const usuarioCreateDTO = new UsuarioCreateDto();
@@ -108,10 +132,9 @@ export class UsuarioController {
     } else {
       return this._usuarioService
         .crearUno(
-          usuario
+          usuario,
         );
     }
-
 
   }
 
@@ -121,13 +144,13 @@ export class UsuarioController {
     @Param('id') id: string,
     @Session() session,
   ): Promise<UsuarioEntity> {
-    const rol=session.usuario.roles.find(
+    const rol = session.usuario.roles.find(
       rol => {
         return (rol === 'Administrador' || rol === 'Supervisor');
-      }
-    )
+      },
+    );
 
-    if(!rol){
+    if (!rol) {
       throw new BadRequestException('Error usted no cuenta con los suficientes permisos');
     }
     const usuarioUpdateDTO = new UsuarioUpdateDto();
@@ -141,7 +164,7 @@ export class UsuarioController {
       return this._usuarioService
         .actualizarUno(
           +id,
-          usuario
+          usuario,
         );
     }
 
@@ -152,17 +175,17 @@ export class UsuarioController {
     @Param('id') id: string,
     @Session() session,
   ): Promise<DeleteResult> {
-    const rol=session.usuario.roles.find(
+    const rol = session.usuario.roles.find(
       rol => {
-        return rol ==='Administrador'
-      }
-    )
-    if(!rol){
+        return rol === 'Administrador';
+      },
+    );
+    if (!rol) {
       throw new BadRequestException('Error usted no cuenta con los suficientes permisos');
     }
     return this._usuarioService
       .borrarUno(
-        +id
+        +id,
       );
   }
 
@@ -210,9 +233,8 @@ export class UsuarioController {
         where,
         skip as number,
         take as number,
-        order
+        order,
       );
   }
-
 
 }

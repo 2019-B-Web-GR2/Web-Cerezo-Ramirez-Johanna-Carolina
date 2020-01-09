@@ -21,6 +21,7 @@ import {UsuarioService} from "./usuario/usuario.service";
           UsuarioEntity,
         ],
         synchronize: true, // Crear -> true , Conectar -> false
+        dropSchema: true,
       }
     ),
   ],
