@@ -37,17 +37,17 @@ export class UsuarioController {
     @Session() session
   ) {
     console.log('Session', session);
-    if (username === 'roger' && password === '1234') {
+    if (username === 'adrian' && password === '1234') {
       session.usuario = {
-        nombre: 'Roger',
+        nombre: 'adrian',
         userId: 1,
         roles: ['Administrador']
       }
       return 'ok';
     }
-    if (username === 'laza' && password === '1234') {
+    if (username === 'vicente' && password === '1234') {
       session.usuario = {
-        nombre: 'Laza',
+        nombre: 'vicente',
         userId: 2,
         roles: ['Supervisor']
       }

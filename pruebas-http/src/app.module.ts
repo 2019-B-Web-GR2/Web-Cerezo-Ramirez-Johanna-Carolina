@@ -1,10 +1,14 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {UsuarioEntity} from './usuario/usuario.entity';
+import {Module} from '@nestjs/common';
+import {AppController} from './app.controller';
+import {AppService} from './app.service';
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {UsuarioEntity} from "./usuario/usuario.entity";
+import {UsuarioModule} from "./usuario/usuario.module";
+import {UsuarioService} from "./usuario/usuario.service";
+
 @Module({
   imports: [
+    UsuarioModule,
     TypeOrmModule.forRoot(
       {
         type: 'mysql',
@@ -17,10 +21,16 @@ import {UsuarioEntity} from './usuario/usuario.entity';
           UsuarioEntity,
         ],
         synchronize: true, // Crear -> true , Conectar -> false
-      },
+      }
     ),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private _usuarioService: UsuarioService,
+  ) {
+
+  }
+}
