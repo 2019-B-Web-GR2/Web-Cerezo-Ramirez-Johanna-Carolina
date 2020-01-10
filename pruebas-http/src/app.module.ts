@@ -13,7 +13,7 @@ import {UsuarioService} from "./usuario/usuario.service";
       {
         type: 'mysql',
         host: 'localhost',
-        port: 32769,
+        port: 32777,
         username: 'johanna',
         password: 'johaweb',
         database: 'web',
@@ -21,7 +21,7 @@ import {UsuarioService} from "./usuario/usuario.service";
           UsuarioEntity,
         ],
         synchronize: true, // Crear -> true , Conectar -> false
-        dropSchema: true,
+        dropSchema: false,
       }
     ),
   ],

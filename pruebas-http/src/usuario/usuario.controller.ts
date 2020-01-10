@@ -35,8 +35,28 @@ export class UsuarioController {
     res.render('ejemplo', {
       datos: {
       nombre: 'Adrian',
+        suma: this.suma, // definicion de la funcion
+        joi: Joi,
       },
     });
+  }
+
+  suma(numUno, numDos) {
+    return numUno + numDos;
+  }
+
+  @Get('ruta/mostrar-usuarios')
+  async rutaMostrarUsuarios(
+    @Res() res,
+  ) {
+    const usuarios = await this._usuarioService.buscar();
+    res.render('usuario/rutas/buscar-mostrar-usuario',
+      {
+        datos: {
+          usuarios, // es igual a usuarios:usuarios
+        },
+      },
+    );
   }
 
   @Post('login')

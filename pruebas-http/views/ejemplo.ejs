@@ -1,5 +1,38 @@
-<html>
-    <body>
-        <h1>Al fin vine a clase, <%= datos.nombre%></h1>
-    </body>
-</html>
+<% const version = "1.0.0"; %>
+<% const total = 1 + 2; %>
+<% const adrian = {
+  nombre: 'Adrian'
+}; %>
+<% const arregloNumeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; %>
+<% const urlBase = "https://images.mediotiempo.com/"%>
+<% function anadirAnio(numero) {
+  return '2020-' + numero
+} %>
+<!-- INICIO ITERAR -->
+<h1>JOI :<%= datos.joi %></h1>
+
+<% arregloNumeros.forEach( (numero)=> { %>
+  <!-- COMPONENTE MOSTRAR NUMERO -->
+  <%- include('componentes/numeros/mostrar-numeros',
+  {
+  anadirAnio:anadirAnio,
+  numero:numero,
+  urlBase:urlBase
+  }); %>
+<% }); %>
+<!-- FIN ITERAR -->
+
+<% if(adrian.esProfesor){%>
+  <h1>Bienvenido profe <%= adrian.nombre %></h1>
+  <p>Suma:<%= datos.suma(2,3)%></p>
+<% } else {%>
+  <h1>Bienvenido estudiante</h1>
+  <p>Suma:<%= datos.suma(2,3)%></p>
+<% }%>
+<h1>
+  HOLAAAA <%= datos.nombre %>
+</h1>
+<p>Version: <%= version %></p>
+<p>Total: <%= total %></p>
+<p>Arreglo: <%= arregloNumeros %></p>
+<p>Objeto: <%= adrian.nombre %></p>
