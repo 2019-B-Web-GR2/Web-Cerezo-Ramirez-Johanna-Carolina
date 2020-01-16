@@ -1,1 +1,47 @@
-<h1>Crear Usuario</h1>
+<%- include('../../compartido/cabecera')%>
+
+<div class="container">
+    <h1>Crear Usuario</h1>
+
+    <form action="/usuario"
+        method="POST">
+        <div class="form-group">
+            <label for="nombreID">Nombre</label>
+            <input id="nombreID"
+                    type="text"
+                   placeholder="EJ: Johanna"
+                   title="Ingresar nombre usuario"
+                   name="nombre"
+                    class="form-control">
+            <small id="nombreIDHelp"
+                    class="form-text text-muted">
+                    Ingresa un nombre  mayor a 3 caracteres y menor a 10.
+            </small>
+            <label for="cedulaID">Cedula</label>
+            <input id="cedulaID"
+                   type="text"
+                   placeholder="EJ: 0751010414"
+                   title="Ingresar cedula"
+                   name="cedula"
+                   class="form-control">
+            <small id="cedulaIDHelp"
+                   class="form-text text-muted">
+                Ingresa una cedula de 10 caracteres.
+            </small>
+        </div>
+        <button type="submit"
+                class="btn btn-danger">
+            Crear Usuario
+        </button>
+        <button type="reset"
+                class="btn btn-danger">
+            Limpiar formulario
+        </button>
+
+    </form>
+
+
+
+</div>
+
+<%- include('../../compartido/pie-de-pagina')%>
