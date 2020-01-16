@@ -59,6 +59,15 @@ export class UsuarioController {
     );
   }
 
+  @Get('ruta/crear-usuarios')
+  rutaCrearUsuarios(
+    @Res() res,
+  ) {
+    res.render('usuario/rutas/crear-usuario',
+      {},
+    );
+  }
+
   @Post('login')
   login(
     @Body('username') username: string,
