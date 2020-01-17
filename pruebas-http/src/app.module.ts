@@ -13,7 +13,7 @@ import {UsuarioService} from "./usuario/usuario.service";
       {
         type: 'mysql',
         host: 'localhost',
-        port: 32769,
+        port: 32771,
         username: 'johanna',
         password: 'johaweb',
         database: 'web',

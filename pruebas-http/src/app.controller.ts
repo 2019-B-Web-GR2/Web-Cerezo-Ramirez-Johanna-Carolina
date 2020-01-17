@@ -1,10 +1,18 @@
-import { Body, Controller, Get, HttpCode, InternalServerErrorException, Param, Post, Query, Headers} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, InternalServerErrorException, Param, Post, Query, Headers, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller('pepito') // Decorador puede tener o no parametros. Aqui esta el segmento de la URL
 export class AppController {
   constructor(private readonly appService: AppService) {
   } // http://localhost:4000/pepito/hola-inge
+
+
+  @Get('login')
+  login(
+    @Res() res,
+  ) {
+    res.render('login/login');
+  }
 
   // http://localhost:4000/pepito GET
   @Get('hola-inge') // -> url "/"

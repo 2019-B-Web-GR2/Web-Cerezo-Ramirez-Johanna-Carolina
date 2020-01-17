@@ -18,6 +18,8 @@ import * as Joi from '@hapi/joi';
 import {UsuarioCreateDto} from './usuario.create-dto';
 import {validate} from 'class-validator';
 import {UsuarioUpdateDto} from './usuario.update-dto';
+import { options } from 'tsconfig-paths/lib/options';
+import { tryCatch } from 'rxjs/internal-compatibility';
 
 // JS const Joi = require('@hapi/joi');
 
@@ -61,10 +63,13 @@ export class UsuarioController {
 
   @Get('ruta/crear-usuarios')
   rutaCrearUsuarios(
+    @Query('error') error: string,
     @Res() res,
-  ) {
+      ) {
     res.render('usuario/rutas/crear-usuario',
-      {},
+      {
+        datos:{error},
+      },
     );
   }
 
@@ -142,8 +147,9 @@ export class UsuarioController {
   @Post()
   async crearUnUsuario(
     @Body() usuario: UsuarioEntity,
+    @Res() res,
     @Session() session,
-  ): Promise<UsuarioEntity> {
+  ): Promise<void> {
     const administrador = session.usuario.roles.find(
       rol => {
         return rol === 'Administrador';
@@ -157,14 +163,24 @@ export class UsuarioController {
     usuarioCreateDTO.cedula = usuario.cedula;
     const errores = await validate(usuarioCreateDTO);
     if (errores.length > 0) {
-      throw new BadRequestException('Error validando');
+      res.redirect(
+       '/usuario/ruta/crear-usuarios?error=Error validando',
+      );
+     // throw new BadRequestException('Error validando');
     } else {
-      return this._usuarioService
-        .crearUno(
-          usuario,
+      try {
+        await this._usuarioService
+          .crearUno(
+            usuario,
+          );
+        res.redirect(
+          '/usuario/ruta/crear-usuarios?error=Error validando',
         );
-    }
-
+      } catch (error) {
+        // tslint:disable-next-line:no-console
+        console.error(error);
+      }
+      }
   }
 
   @Put(':id')

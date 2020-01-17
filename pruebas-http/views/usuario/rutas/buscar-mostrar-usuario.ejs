@@ -1,6 +1,11 @@
 <%- include('../../compartido/cabecera')%>
 
 <div class="container">
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <% } %>
 <h1>Ruta mostrar usuario </h1>
     <a href="/usuario/ruta/crear-usuarios">
         <button type="button"
