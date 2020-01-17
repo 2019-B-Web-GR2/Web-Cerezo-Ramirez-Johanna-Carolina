@@ -18,10 +18,13 @@
                     class="btn btn-danger">
                 Editar
             </button>
-            <button  type="button"
-                     class="btn btn-danger">
-                Eliminar
-            </button>
+            <form action="/usuario/<%usuario.id%>"
+                    method="DELETE">
+                <button  type="button"
+                         class="btn btn-danger">
+                    Eliminar
+                </button>
+            </form>
         </td>
     </tr>
     <%}); %>

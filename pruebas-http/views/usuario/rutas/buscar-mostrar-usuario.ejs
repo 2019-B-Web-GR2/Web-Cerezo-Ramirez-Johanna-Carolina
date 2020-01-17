@@ -1,6 +1,11 @@
 <%- include('../../compartido/cabecera')%>
 
 <div class="container">
+    <% if(datos.mensaje){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.mensaje %>
+        </div>
+    <% } %>
     <% if(datos.error){ %>
         <div class="alert alert-danger" role="alert">
             <%= datos.error %>

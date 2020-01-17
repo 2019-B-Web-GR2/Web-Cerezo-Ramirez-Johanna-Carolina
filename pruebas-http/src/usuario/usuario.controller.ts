@@ -50,11 +50,14 @@ export class UsuarioController {
   @Get('ruta/mostrar-usuarios')
   async rutaMostrarUsuarios(
     @Res() res,
+    @Query('mensaje') mensaje:string,
+    @Query('error') error:string,
   ) {
     const usuarios = await this._usuarioService.buscar();
     res.render('usuario/rutas/buscar-mostrar-usuario',
       {
         datos: {
+          mensaje,
           usuarios, // es igual a usuarios:usuarios
         },
       },
@@ -68,11 +71,35 @@ export class UsuarioController {
       ) {
     res.render('usuario/rutas/crear-usuario',
       {
-        datos:{error},
+        datos:{
+          error,
+        },
       },
     );
   }
 
+
+  @Get('ruta/editar-usuarios/:idUsuario')
+  async rutaEditarUsuarios(
+    @Query('error') error: string,
+    @Param('idUsuario') idUsuario: string,
+    @Res() res,
+  ) {
+    const consulta = {
+      where: {
+        id: idUsuario,
+      };
+  };
+    const usuario = await this._usuarioService.buscar()
+    res.render('usuario/rutas/crear-usuario',
+      {
+        datos: {
+          error,
+        },
+      },
+    );
+  }
+  
   @Post('login')
   login(
     @Body('username') username: string,
@@ -213,6 +240,22 @@ export class UsuarioController {
         );
     }
 
+  }
+  @Post(':id')
+  async eliminarUnoPost(
+    @Param('id') id: string,
+    @Res() res,
+  ): Promise<void> {
+    try {
+      await this._usuarioService
+        .borrarUno(
+          +id,
+        );
+      res.redirect(`/usuario/ruta/mostrar-usuarios?mensaje=Usuario ID: ${id} eliminado`);
+    }catch (error) {
+      console.error(error);
+      res.redirect(`/usuario/ruta/mostrar-usuarios?error=Error del servidor`);
+    }
   }
 
   @Delete(':id')
