@@ -14,12 +14,15 @@
         <td><%= usuario.nombre%></td>
         <td><%= usuario.cedula%></td>
         <td>
-            <button type="button"
-                    class="btn btn-danger">
-                Editar
-            </button>
+            <a href="/usuario/ruta/editar-usuarios/<%= usuario.id%>">
+                <button type="button"
+                        class="btn btn-danger">
+                    Editar
+                </button>
+            </a>
+
             <form action="/usuario/<%usuario.id%>"
-                    method="DELETE">
+                    method="POST">
                 <button  type="button"
                          class="btn btn-danger">
                     Eliminar

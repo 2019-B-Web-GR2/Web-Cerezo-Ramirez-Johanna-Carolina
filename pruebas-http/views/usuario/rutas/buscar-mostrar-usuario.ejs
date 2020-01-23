@@ -19,6 +19,24 @@
         </button>
     </a>
 
+        <form action="/usuario/mostrar-usuarios"
+                method="GET">
+            <div>
+                <label for="consultaID">Buscar Usuario</label>
+                <input id="consultaID"
+                       type="text"
+                       placeholder="EJ: 0751010414 o Joha"
+                       title="Ingresar buscqueda por nombre o por cedula"
+                       name="consultaUsuario"
+                       class="form-control">
+                <small id="cedulaIDHelp"
+                       class="form-text text-muted">
+                    Puede buscar por cedula o por nombre
+                </small>
+            </div>
+
+        </form>
+
 <%- include('../componentes/mostar-tabla',{
  usuarios: datos.usuarios
 })
