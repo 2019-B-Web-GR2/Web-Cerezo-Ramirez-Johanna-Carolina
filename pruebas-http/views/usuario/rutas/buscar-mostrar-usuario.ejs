@@ -1,6 +1,75 @@
 <%- include('../../compartido/cabecera')%>
 
 <div class="container">
+
+    <button onclick="anadirParrafo()">
+        hola mundo
+    </button>
+    <div id="contenedor"></div>
+
+    <script>
+        function anadirParrafo() {
+          const elementoContenedor = document.getElementById('contenedor');
+          const nombreEtiqueta = 'p';
+          const parrafo = document.createElement(nombreEtiqueta);
+          parrafo.innerHTML = 'HOla mundo 2';
+          elementoContenedor.appendChild(parrafo);
+        }
+
+        function holaMundo(EVENTO){
+          console.log(EVENTO)
+          console.log("hola mundo")
+        }
+    </script>
+
+
+    <select name="provincias"
+            id="provincias"
+            onchange="cargarCiudades()">
+        <option value="1"> Pichincha </option>
+        <option value="2"> Guayas </option>
+    </select>
+    <div id="contenedorCiudades"></div>
+    <script>
+        function cargarCiudades() {
+          console.log('Canbieee :3');
+          const  ciudadPichincha = [
+            {id:1, nombre:'Quito'}
+          ]
+          const  ciudadGuayas = [
+            {id:2, nombre:'Guayaquil'}
+          ]
+          const etiquetaProvincias = document.getElementById('provincias');
+          const etiquetaContenedoraCiudades = document.getElementById('contenedorCiudades')
+          if(etiquetaProvincias.value === '1'){
+            console.log('Pichincha');
+            let opciones = ''
+            ciudadPichincha.forEach(
+              (ciudad)=>{
+                opciones = opciones + ` <option value="${ciudad.id}"> ${ciudad.nombre} </option>`
+              }
+            );
+            const select = `<select name ="ciudad" id = "ciudad">
+                ${opciones}
+            </select>`
+            const etiquetaSelect = document.createElement('div');
+            etiquetaSelect.innerHTML = select;
+            const existeNodo = etiquetaContenedoraCiudades.childNodes[0]
+            if(existeNodo){
+              etiquetaContenedoraCiudades.removeChild(existeNodo)
+            }
+
+            etiquetaContenedoraCiudades.appendChild(etiquetaSelect)
+
+          }else{
+            console.log('Guayas')
+          }
+        }
+    </script>
+
+
+
+
     <% if(datos.mensaje){ %>
         <div class="alert alert-danger" role="alert">
             <%= datos.mensaje %>
@@ -11,6 +80,7 @@
             <%= datos.error %>
         </div>
     <% } %>
+
 <h1>Ruta mostrar usuario </h1>
     <a href="/usuario/ruta/crear-usuarios">
         <button type="button"
