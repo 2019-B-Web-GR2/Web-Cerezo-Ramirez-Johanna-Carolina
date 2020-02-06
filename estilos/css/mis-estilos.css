@@ -1,0 +1,48 @@
+
+.cafe{
+    background-color: lightcoral;
+}
+
+.rojo{
+    background-color: lightblue;
+}
+
+
+.web{
+    background-color: darkseagreen;
+    color: black;
+}
+
+@media (max-width: 992px) {
+    .web{
+        background-color: black;
+        color:white;
+    }
+}
+
+@media (max-width: 560px) {
+    .web{
+        background-color: white;
+        color:black;
+    }
+}
+@keyframes rojo-amarillo {
+    from {
+        background-color: red;
+        color : darkblue;
+    }
+    to {
+        background-color: yellow;
+        color : darkgreen;
+    }
+}
+
+.animacion-web{
+    background-color: blue;
+    color: orange;
+    animation-name: rojo-amarillo;
+    animation-duration: 10s;
+}
+.transformacion{
+    transform: rotate(-20deg);
+}
