@@ -1,5 +1,6 @@
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { type } from 'os';
+import { CarEntity } from '../car/car.entity';
 
 @Entity('owner_web')
 export class OwnerEntity {
@@ -45,5 +46,11 @@ export class OwnerEntity {
   })
   idCard?: string;
 
+  @OneToMany(
+    // tslint:disable-next-line:no-shadowed-variable
+    type => CarEntity, //Entidad
+    car => car.owner, //Nombre del campo
+  )
+  cars: CarEntity[];
 
 }

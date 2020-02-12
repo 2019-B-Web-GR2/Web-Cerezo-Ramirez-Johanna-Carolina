@@ -16,9 +16,9 @@ import { MascotasEntity } from './mascotas/mascotas.entity';
       {
         type: 'mysql',
         host: 'localhost',
-        port: 32769,
+        port: 32779,
         username: 'johanna',
-        password: 'johaweb',
+        password: 'web2019',
         database: 'web',
         entities: [
           UsuarioEntity,
@@ -26,7 +26,7 @@ import { MascotasEntity } from './mascotas/mascotas.entity';
         ],
         synchronize: true, // Crear -> true , Conectar -> false
         dropSchema: false,
-      }
+      },
     ),
   ],
   controllers: [AppController],

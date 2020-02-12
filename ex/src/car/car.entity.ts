@@ -1,5 +1,6 @@
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { type } from 'os';
+import { OwnerEntity } from '../owner/owner.entity';
 
 @Entity('car_web')
 export class CarEntity {
@@ -66,6 +67,11 @@ export class CarEntity {
   })
   year?: string;
 
+  @ManyToOne(
+    type => OwnerEntity,
+    owner => owner.cars,
+  )
+  owner: OwnerEntity;
 
 
 
