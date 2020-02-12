@@ -5,6 +5,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {OwnerEntity} from "./owner/owner.entity";
 import {OwnerModule} from "./owner/owner.module";
 import {OwnerService} from "./owner/owner.service";
+import { CarEntity } from './car/car.entity';
 //import {CarModule } from './car/car.module';
 //import {CarEntity } from './car/car.entity';
 
@@ -22,7 +23,7 @@ import {OwnerService} from "./owner/owner.service";
         database: 'web',
         entities: [
           OwnerEntity,
-        // CarEntity,
+          CarEntity,
         ],
         synchronize: true, // Crear -> true , Conectar -> false
         dropSchema: false,
