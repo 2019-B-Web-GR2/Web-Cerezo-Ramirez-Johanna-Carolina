@@ -17,7 +17,7 @@ import { CarEntity } from './car/car.entity';
       {
         type: 'mysql',
         host: 'localhost',
-        port: 32779,
+        port: 32769,
         username: 'johanna',
         password: 'web2019',
         database: 'web',

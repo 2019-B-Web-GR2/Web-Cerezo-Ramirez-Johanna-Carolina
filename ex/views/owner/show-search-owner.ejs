@@ -1,0 +1,42 @@
+<%- include('../sharedViews/header')%>
+
+
+<div class="container">
+    <h1>Ruta show owner </h1>
+    <a href="owner/create-owner">
+        <button type="button"
+                class="btn btn-danger">
+            Crear owner
+        </button>
+    </a>
+
+    <form action="/owner/show-owners-table"
+          method="GET">
+        <div>
+            <label for="consultaID">Buscar Owner</label>
+            <input id="consultaID"
+                   type="text"
+                   placeholder="EJ: 0751010414 o Joha"
+                   title="Ingresar buscqueda por nombre o por cedula"
+                   name="consultaOwner"
+                   class="form-control">
+            <small id="cedulaIDHelp"
+                   class="form-text text-muted">
+                Puede buscar por cedula o por nombre
+            </small>
+        </div>
+
+    </form>
+
+    <%- include('./show-owners-table',{
+    owners: datos.owners
+    })
+    %>
+
+</div>
+
+
+
+
+
+<%- include('../sharedViews/footer')%>

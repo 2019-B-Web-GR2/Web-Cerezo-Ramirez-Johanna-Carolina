@@ -1,0 +1,37 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Cedula</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody  async="true">
+    <%     owners.forEach( (owner) => {%>
+        <tr>
+            <th scope="row"><%= owner.id%></th>
+            <td><%= owner.name%></td>
+            <td><%= owner.lastname%></td>
+            <td><%= owner.idCard%></td>
+            <td>
+                <a href="owner/edit-owner/<%= owner.id %>">
+                    <button type="button"
+                            class="btn btn-info">
+                        Editar
+                    </button>
+                </a>
+                <form action="/owner/<%= owner.id %>"
+                      method="POST"
+                >
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+    <%}); %>
+    </tbody>
+</table>

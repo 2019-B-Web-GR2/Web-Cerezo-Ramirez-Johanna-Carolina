@@ -35,7 +35,77 @@ export class OwnerService {
       .save(owner); // UPSERT
   }
 
+  buscar(
+    where: any = {},
+    skip: number = 0,
+    take: number = 10,
+    order: any = {
+      id: 'DESC',
+      name: 'ASC'
+    }
+  ): Promise<OwnerEntity[]> {
 
+    // Exactamente el name o Exactamente la idCard
+    const consultaWhere = [
+      {
+        name: ''
+      },
+      {
+        lastname: ''
+      },
+      {
+        idCard: ''
+      }
+    ];
+
+    // Exactamente el name o LIKE la idCard
+    const consultaWhereLike = [
+      {
+        name: Like('a%')
+      },
+      {
+        lastname: Like('a%')
+      },
+      {
+        idCard: Like('%a')
+      }
+    ];
+
+    // id sea mayor a 20
+    const consultaWhereMoreThan = {
+      id: MoreThan(20)
+    };
+
+    // id sea igual a x
+    const consultaWhereIgual = {
+      id: 30
+    };
+
+    return this._repositorioOwner
+      .find({
+        where: where,
+        skip: skip,
+        take: take,
+        order: order,
+      });
+  }
+
+  buscarPorID(
+    where: any = {}
+  ):  Promise<OwnerEntity[]> {
+
+    console.log(where)
+    const consultaWhereIgual = {
+      id: where.id
+    };
+
+    return this._repositorioOwner
+      .find({
+        where: consultaWhereIgual,
+
+      });
+
+  }
 
 
 }
