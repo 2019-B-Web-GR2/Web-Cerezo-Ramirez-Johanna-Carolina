@@ -5,19 +5,19 @@ export class OwnerCreateDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @MaxLength(80)
+  @MaxLength(40)
   name: string;
 
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @MaxLength(80)
+  @MaxLength(40)
   lastname: string;
 
   @IsNotEmpty()
   @IsNumberString()
-  @MinLength(3)
-  @MaxLength(80)
+  @MinLength(10)
+  @MaxLength(10)
   idCard: string;
 
 

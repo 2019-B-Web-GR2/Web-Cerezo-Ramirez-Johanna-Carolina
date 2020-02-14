@@ -2,16 +2,22 @@
 
 <% const estaEditando = datos.owner != undefined;%>
 <div class="container">
-    <% if(datos.error){ %>
-        <div class="alert alert-danger" role="alert">
-            <%= datos.error %>
-        </div>
-    <% } %>
+        <% if(datos.error){ %>
+            <div class="alert alert-danger" role="alert">
+                <%= datos.error %>
+            </div>
+        <% } %>
+
+        <% if(datos.mensaje){ %>
+            <div class="alert alert-primary" role="alert">
+                <%= datos.mensaje %>
+            </div>
+        <% } %>
 
 
     <h1> <%= estaEditando? 'Editando a ' + datos.owner.name : 'Crear Owner'%></h1>
 
-    <form action="/owner<%= estaEditando ?  '/' + datos.owner.id : ''%>"
+    <form action="/owner<%= estaEditando ?  '/' + datos.owner.id : '/crear'%>"
           method="POST">
         <div class="form-group">
             <label for="nameID">Nombre</label>
@@ -20,21 +26,21 @@
                    placeholder="EJ: Johanna"
                    title="Ingresar name owner"
                    name="name"
-                   value="<%= estaEditando ? + datos.owner.name : ''%>"
-                    <%=estaEditando ? 'disabled' : ''%>
+                   value="<%= estaEditando ? datos.owner.name : ''%>"
+                    <%=estaEditando ? 'abled' : ''%>
                    class="form-control">
             <small id="nameIDHelp"
                    class="form-text text-muted">
                 Ingresa un name  mayor a 3 caracteres y menor a 10.
             </small>
-            <label for="lastnameID">Apellido>
-            <input id="idCardID"
+            <label for="lastnameID">Apellido</label>
+            <input id="lastnameID"
                    type="text"
                    placeholder="EJ: Cerezo"
                    title="Ingresar Apellido"
-                   name="apellido"
-                   value="<%= estaEditando ? + datos.owner.lastname: ''%>"
-                    <%=estaEditando ? 'disabled' : ''%>
+                   name="lastname"
+                   value="<%= estaEditando ? datos.owner.lastname: ''%>"
+                    <%=estaEditando ? 'abled' : ''%>
                    class="form-control">
             <small id="lastnameIDHelp"
                    class="form-text text-muted">
@@ -56,7 +62,7 @@
         </div>
         <button type="submit"
                 class="btn btn-danger">
-            Crear Owner
+            <%= estaEditando ?'Editar Owner' : 'Crear Owner'%>
         </button>
         <button type="reset"
                 class="btn btn-danger">

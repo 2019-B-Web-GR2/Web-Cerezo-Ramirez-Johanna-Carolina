@@ -1,4 +1,15 @@
-import {IsNotEmpty, IsNumberString, IsString, Max, MaxLength, Min, MinLength} from "class-validator";
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsString,
+  Length,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
+import { OwnerEntity } from '../owner/owner.entity';
 
 export class CarCreateDto {
 
@@ -6,7 +17,8 @@ export class CarCreateDto {
   @IsNumberString()
   @MinLength(3)
   @MaxLength(80)
-  chasis: string;
+  chassis: string;
+
 
 
   @IsNotEmpty()
@@ -29,8 +41,16 @@ export class CarCreateDto {
 
   @IsNotEmpty()
   @IsNumberString()
-  @MinLength(4)
-  @MaxLength(4)
+  @Length(4, 4)
   year: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
+
+  @IsNotEmpty()
+  owner: OwnerEntity;
+
+
 
 }

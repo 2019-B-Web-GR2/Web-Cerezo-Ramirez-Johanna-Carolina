@@ -90,22 +90,10 @@ export class OwnerService {
       });
   }
 
-  buscarPorID(
-    where: any = {}
-  ):  Promise<OwnerEntity[]> {
 
-    console.log(where)
-    const consultaWhereIgual = {
-      id: where.id
-    };
 
-    return this._repositorioOwner
-      .find({
-        where: consultaWhereIgual,
 
-      });
 
-  }
 
 
 }

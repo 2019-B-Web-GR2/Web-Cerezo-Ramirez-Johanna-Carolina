@@ -21,7 +21,7 @@ export class CarEntity {
     name: 'chasis',
     comment: 'car`s chassis number'
   })
-  chasis?: string;
+  chassis?: string;
 
   @Index({
     unique: false,
@@ -66,6 +66,17 @@ export class CarEntity {
     comment: 'car`s year'
   })
   year?: string;
+
+  @Index({
+    unique: false,
+  })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    name: 'price',
+    comment: 'car`s price'
+  })
+  price?: number;
 
   @ManyToOne(
     type => OwnerEntity,

@@ -2,21 +2,28 @@
     <thead>
     <tr>
         <th scope="col">ID</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellido</th>
-        <th scope="col">Cedula</th>
-        <th scope="col">Acciones</th>
+        <th scope="col">chassis</th>
+        <th scope="col">marca</th>
+        <th scope="col">modelo</th>
+        <th scope="col">color</th>
+        <th scope="col">anio</th>
+        <th scope="col">precio</th>
+
     </tr>
     </thead>
     <tbody  async="true">
-    <%     owners.forEach( (owner) => {%>
+    <%     cars.forEach( (car) => {%>
         <tr>
-            <th scope="row"><%= owner.id%></th>
-            <td><%= owner.name%></td>
-            <td><%= owner.lastname%></td>
-            <td><%= owner.idCard%></td>
+            <th scope="row"><%= car.id%></th>
+            <td><%= car.chassis%></td>
+            <td><%= car.brand %></td>
+            <td><%= car.model %></td>
+            <td><%= car.color %></td>
+            <td><%= car.year %></td>
+            <td><%= car.price %></td>
+
             <td>
-                <a href="owner/edit-owner/<%= owner.id %>">
+                <a href="car/edit-car/<%= car.id %>">
                     <button type="button"
                             class="btn btn-info">
                         Editar
@@ -24,7 +31,7 @@
                 </a>
 
                 <a>
-                    <form action="/owner/delete/<%= owner.id %>"
+                    <form action="/car/delete/<%= car.id %>"
                           method="POST">
                         <button type="submit"
                                 class="btn btn-danger">

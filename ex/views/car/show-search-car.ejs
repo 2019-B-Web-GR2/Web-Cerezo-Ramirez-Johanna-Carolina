@@ -19,34 +19,34 @@
 
 
 
-    <h1>Ruta show owner </h1>
-    <a href="create-owner">
+    <h1>Ruta show car </h1>
+    <a href="create-car">
         <button type="button"
                 class="btn btn-danger">
-            Crear owner
+            Crear car
         </button>
     </a>
 
-    <form action="/owner/mostrar-owners"
+    <form action="/car/mostrar-cars"
           method="GET">
         <div>
-            <label for="consultaID">Buscar Owner</label>
+            <label for="consultaID">Buscar Car</label>
             <input id="consultaID"
                    type="text"
-                   placeholder="EJ: 0751010414 o Joha"
-                   title="Ingresar buscqueda por nombre o por cedula"
+                   placeholder="EJ: "
+                   title="Ingresar buscqueda por  chassis, color, etc"
                    name="consultaOwner"
                    class="form-control">
             <small id="cedulaIDHelp"
                    class="form-text text-muted">
-                Puede buscar por cedula, apellido o nombre
+                Puede buscar por chassis, color, etc.
             </small>
         </div>
 
     </form>
 
-    <%- include('./show-owners-table',{
-    owners: datos.owners
+    <%- include('./show-cars-table',{
+    cars: datos.cars
     })
     %>
 

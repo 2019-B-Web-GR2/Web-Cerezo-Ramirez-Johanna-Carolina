@@ -6,13 +6,15 @@ import {OwnerEntity} from "./owner/owner.entity";
 import {OwnerModule} from "./owner/owner.module";
 import {OwnerService} from "./owner/owner.service";
 import { CarEntity } from './car/car.entity';
-//import {CarModule } from './car/car.module';
-//import {CarEntity } from './car/car.entity';
+import { CarModule } from './car/car.module';
+import { CarService } from './car/car.service';
+import { CarController } from './car/car.controller';
+
 
 @Module({
   imports: [
     OwnerModule,
-   //CarModule,
+    CarModule,
     TypeOrmModule.forRoot(
       {
         type: 'mysql',
@@ -38,9 +40,12 @@ import { CarEntity } from './car/car.entity';
 })
 export class AppModule {
   constructor(
-    private _ownerService: OwnerService,
+
+    private _ownerService : OwnerService,
   ) {
 
   }
+
+
 
 }
