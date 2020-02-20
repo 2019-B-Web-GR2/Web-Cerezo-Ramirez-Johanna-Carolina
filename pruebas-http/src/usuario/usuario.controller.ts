@@ -273,7 +273,6 @@ export class UsuarioController {
     }
 
   }
-
   @Post(':id')
   async eliminarUnoPost(
     @Param('id') id: string,

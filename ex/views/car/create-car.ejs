@@ -122,7 +122,7 @@
                    placeholder="EJ: 1132121"
                    title="Ingresar idOwner car"
                    name="idOwner"
-                   value="<%= estaEditando ? datos.carOwner.id : ''%>"
+                   value="<%= estaEditando ? datos.car.owner.id : ''%>"
                     <%=estaEditando ? 'abled' : ''%>
                    class="form-control">
             <small id="idOwnerIDHelp"
@@ -131,7 +131,11 @@
             </small>
         </div>
 
-         <button type="submit"
+
+
+
+
+        <button type="submit"
                 class="btn btn-danger">
             <%= estaEditando ?'Editar Car' : 'Crear Car'%>
         </button>

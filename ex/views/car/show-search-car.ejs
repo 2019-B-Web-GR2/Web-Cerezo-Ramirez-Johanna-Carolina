@@ -17,35 +17,15 @@
     }
     %>
 
-    <h1>Lista de Autos </h1>
-        <table>
-            <tr>
-                <td>
-                    <div >
-                        <a href="../car/create-car">
-                            <button type="button"
-                                    class="btn btn-danger">
-                                Crear car
-                            </button>
-                        </a>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <a href="../compras/ver-carrito">
-                            <button type="button"
-                                    class="btn btn-danger">
-                                Ver Carrito
-                            </button>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </table>
 
 
-
-
+    <h1>Ruta show car </h1>
+    <a href="create-car">
+        <button type="button"
+                class="btn btn-danger">
+            Crear car
+        </button>
+    </a>
 
     <form action="/car/mostrar-cars"
           method="GET">
@@ -55,7 +35,7 @@
                    type="text"
                    placeholder="EJ: "
                    title="Ingresar buscqueda por  chassis, color, etc"
-                   name="consultaCar"
+                   name="consultaOwner"
                    class="form-control">
             <small id="cedulaIDHelp"
                    class="form-text text-muted">
@@ -66,8 +46,7 @@
     </form>
 
     <%- include('./show-cars-table',{
-    cars: datos.cars,
-    carService: datos.carService
+    cars: datos.cars
     })
     %>
 

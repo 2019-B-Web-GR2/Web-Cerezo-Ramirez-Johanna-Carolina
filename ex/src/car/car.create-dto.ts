@@ -19,6 +19,8 @@ export class CarCreateDto {
   @MaxLength(80)
   chassis: string;
 
+
+
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
@@ -27,7 +29,7 @@ export class CarCreateDto {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(2)
+  @MinLength(3)
   @MaxLength(80)
   model: string;
 

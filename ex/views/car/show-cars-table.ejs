@@ -8,6 +8,7 @@
         <th scope="col">color</th>
         <th scope="col">anio</th>
         <th scope="col">precio</th>
+
     </tr>
     </thead>
     <tbody  async="true">
@@ -22,12 +23,13 @@
             <td><%= car.price %></td>
 
             <td>
-                <a href="/car/edit-car/<%= car.id %>">
+                <a href="car/edit-car/<%= car.id %>">
                     <button type="button"
                             class="btn btn-info">
                         Editar
                     </button>
                 </a>
+
                 <a>
                     <form action="/car/delete/<%= car.id %>"
                           method="POST">
@@ -37,37 +39,13 @@
                         </button>
                     </form>
                 </a>
-            </td>
-            <td>
-                <a>
-                    <form action="/compras/anadir-carrito/<%= car.id %>"
-                          method="POST">
-                        <label for="quantityID">Cantidad</label>
-                        <input id="quantityID"
-                               type="number"
-                               placeholder="EJ: 2"
-                               title="Ingresar quantity car"
-                               name="quantity"
-                               value='abled'
-                               class="form-control">
-                        <small id="quantityIDHelp"
-                               class="form-text text-muted">
-                            Ingresa un quantity valido.
-                        </small>
-                        <button type="submit"
-                                class="btn btn-danger">
-                            Agregar al carrito
-                        </button>
-                    </form>
-                    <form  action="/compras/quitar-carrito/<%= car.id %>"
-                           method="POST">
-                        <button type="submit"
-                                class="btn btn-danger">
-                            Quitar del carrito
-                        </button>
-                    </form>
-                </a>
 
+                <a href="">
+                    <button type="button"
+                            class="btn btn-info">
+                        Ver autos
+                    </button>
+                </a>
             </td>
         </tr>
     <%}); %>
