@@ -1,0 +1,77 @@
+
+<%- include('../sharedViews/header')%>
+
+<div class="container">
+    <% if(datos.mensaje){ %>
+        <div class="alert alert-primary" role="alert">
+            <%= datos.mensaje %>
+        </div>
+    <% } %>
+
+    <% if(datos.error){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= datos.error %>
+        </div>
+    <%
+    }
+    %>
+        <div>
+            <h1>Carrito de compras </h1>
+        </div>
+
+        <div>
+            <%- include('../car/show-cars-table',{
+            cars: datos.carrosEnElCarrito
+            })
+            %>
+        </div>
+        <div>
+            <%- include('./total',{
+            header: datos.header
+            })
+            %>
+        </div>
+
+
+                    <div>
+                        <form action="/compras/comprar"
+                              method="POST">
+                            <label for="addressID">Direccion:</label>
+                            <input id="addressID"
+                                   type="string"
+                                   placeholder="EJ: 2"
+                                   title="Ingresar address car"
+                                   name="address"
+                                   value=''
+                                   class="form-control">
+                            <small id="addressIDHelp"
+                                   class="form-text text-muted">
+                                Ingresa un direccion valida.
+                            </small>
+                            <div>
+                                <button type="submit"
+                                        class="btn btn-danger">
+                                    Comprar
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div>
+                        <form  action="/compras/vaciar-carrito/"
+                               method="POST">
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                Vaciar carrito
+                            </button>
+                        </form>
+                    </div>
+
+
+
+
+
+</div>
+
+<%- include('../sharedViews/footer')%>

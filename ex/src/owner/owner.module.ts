@@ -3,12 +3,15 @@ import {OwnerController} from "./owner.controller";
 import {OwnerService} from "./owner.service";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {OwnerEntity} from "./owner.entity";
+import { CarService } from '../car/car.service';
+import { CarEntity } from '../car/car.entity';
 
 @Module({
   imports: [
     TypeOrmModule
       .forFeature([
-          OwnerEntity // Entidades a usarse dentro
+          OwnerEntity,
+          CarEntity,// Entidades a usarse dentro
                         // del modulo.
         ],
         'default' // Nombre de la cadena de conex.
@@ -19,9 +22,11 @@ import {OwnerEntity} from "./owner.entity";
   ],
   providers: [
     OwnerService,
+    CarService,
   ],
   exports: [
     OwnerService,
+    CarService,
   ],
 })
 export class OwnerModule {

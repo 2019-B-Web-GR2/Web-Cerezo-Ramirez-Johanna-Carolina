@@ -1,6 +1,7 @@
 import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { type } from 'os';
 import { OwnerEntity } from '../owner/owner.entity';
+import { DetailEntity } from '../detail/detail.entity';
 
 @Entity('car_web')
 export class CarEntity {
@@ -84,6 +85,12 @@ export class CarEntity {
   )
   owner: OwnerEntity;
 
+  @OneToMany(
+    // tslint:disable-next-line:no-shadowed-variable
+    type => DetailEntity, //Entidad
+    detail => detail.car, //Nombre del campo
+  )
+  details: DetailEntity[];
 
 
 

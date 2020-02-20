@@ -1,7 +1,8 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {OwnerEntity} from "./owner.entity";
-import {DeleteResult, Like, MoreThan, Repository} from "typeorm";
+import { DeleteResult, getRepository, Like, MoreThan, Repository } from 'typeorm';
+import { CarEntity } from '../car/car.entity';
 
 @Injectable()
 export class OwnerService {
@@ -40,8 +41,7 @@ export class OwnerService {
     skip: number = 0,
     take: number = 10,
     order: any = {
-      id: 'DESC',
-      name: 'ASC'
+      id: 'ASC',
     }
   ): Promise<OwnerEntity[]> {
 
@@ -90,9 +90,12 @@ export class OwnerService {
       });
   }
 
-
-
-
+  async buscarCars(idOwner : number) : Promise<CarEntity[]>{
+     const owner = await this._repositorioOwner.findOne({
+       where: { id: idOwner}, relations : ['cars']
+     });
+    return owner.cars;
+  }
 
 
 

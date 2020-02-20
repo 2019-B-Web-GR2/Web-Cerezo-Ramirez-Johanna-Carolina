@@ -1,14 +1,17 @@
-import {Injectable} from "@nestjs/common";
+import { Body, Injectable, Param, Post, Res } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {CarEntity} from "./car.entity";
 import {DeleteResult, Like, MoreThan, Repository} from "typeorm";
+import { OwnerEntity } from '../owner/owner.entity';
+import { HeaderEntity } from '../header/header.entity';
+import { DetailEntity } from '../detail/detail.entity';
 
 
 @Injectable()
 export class CarService {
   constructor(
     @InjectRepository(CarEntity) // Inyectar Dependencias
-    private _repositorioCar: Repository<CarEntity>
+    private _repositorioCar: Repository<CarEntity>,
   ) {
   }
 
@@ -29,32 +32,46 @@ export class CarService {
 
   actualizarUno(
     id: number,
-    owner: CarEntity
+    car: CarEntity
   ): Promise<CarEntity> {
-    owner.id = id;
+    car.id = id;
     return this._repositorioCar
-      .save(owner); // UPSERT
+      .save(car); // UPSERT
   }
 
-  buscarPorOwner(
-    where: any = {},
-    skip: number = 0,
-    take: number = 10,
-    order: any = {
-      id: 'DESC',
-      chassis: 'ASC'
-    }
-  ){
+  async buscarOwner(idCar : number) : Promise<OwnerEntity>{
+    const car = await this._repositorioCar.findOne({
+      where: { id: idCar}, relations : ['owner']
+    });
+    return car.owner;
+  }
+
+  async buscarDetails(idCar:number, idHeader:number){
+    const car = await this._repositorioCar.findOne({
+      where: { id: idCar}, relations : ['details']
+    });
+    console.log(car.details);
+    const detailsParBorrar:[DetailEntity] = [new DetailEntity()];
+    car.details.forEach(
+      (detail) => {
+        if(detail.header.id === idHeader){
+          detailsParBorrar.push(detail)
+        }
+      }
+    )
+
 
   }
+
+
+
 
   buscar(
     where: any = {},
     skip: number = 0,
     take: number = 10,
     order: any = {
-      id: 'DESC',
-      chassis: 'ASC'
+      id: 'ASC',
     }
   ): Promise<CarEntity[]> {
 
@@ -127,5 +144,8 @@ export class CarService {
       });
 
   }
+
+
+
 
 }

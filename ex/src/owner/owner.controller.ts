@@ -8,8 +8,8 @@ import {
   Post,
   Put,
   Query, Req, Res,
-  Session,
-  UnauthorizedException,
+  Session, SetMetadata,
+  UnauthorizedException, UseGuards,
 } from '@nestjs/common';
 import {OwnerService} from './owner.service';
 import {OwnerEntity} from './owner.entity';
@@ -21,19 +21,25 @@ import * as Joi from '@hapi/joi';
 import { options } from 'tsconfig-paths/lib/options';
 import { tryCatch } from 'rxjs/internal-compatibility';
 import { response } from 'express';
+import { CarEntity } from '../car/car.entity';
+import { async } from 'rxjs/internal/scheduler/async';
+import { CarService } from '../car/car.service';
+import { RolesGuard } from '../roles.guard';
 
 // JS const Joi = require('@hapi/joi');
 
 @Controller('owner')
+@UseGuards(RolesGuard)
 export class OwnerController {
   constructor(
-    private readonly _ownerService: OwnerService,
+    private readonly _ownerService: OwnerService, private _carService: CarService,
   ) {
 
   }
 
 
   @Get('mostrar-owners')
+  @SetMetadata('roles', ['Administrador'])
   async rutaMostrarOwners(
     @Res() res,
     @Query('mensaje') mensaje: string,
@@ -68,6 +74,7 @@ export class OwnerController {
   }
 
   @Post('crear')
+  @SetMetadata('roles', ['Administrador'])
   async crearUnOwner(
     @Body() owner: OwnerEntity,
     @Res() res,
@@ -77,7 +84,6 @@ export class OwnerController {
     ownerCreateDTO.name = owner.name;
     ownerCreateDTO.lastname = owner.lastname;
     ownerCreateDTO.idCard = owner.idCard;
-    console.log(owner.name, owner.lastname, owner.idCard)
     const errores = await validate(ownerCreateDTO);
     if (errores.length > 0) {
 
@@ -103,6 +109,7 @@ export class OwnerController {
   }
 
   @Get('create-owner')
+  @SetMetadata('roles', ['Administrador'])
   rutaCrearOwners(
     @Query('error') error: string,
     @Query('mensaje') mensaje: string,
@@ -121,6 +128,7 @@ export class OwnerController {
 
 
   @Get('owner/edit-owner/:idOwner')
+  @SetMetadata('roles', ['Administrador'])
   async rutaEditarOwners(
     @Query('error') error: string,
     @Param('idOwner') idOwner: string,
@@ -159,6 +167,7 @@ export class OwnerController {
 
 
   @Post(':id')
+  @SetMetadata('roles', ['Administrador'])
   async actualizarUnOwner(
     @Body() owner: OwnerEntity,
     @Param('id') id: string,
@@ -186,29 +195,78 @@ export class OwnerController {
 
   }
 
-
   @Post('delete/:id')
+  @SetMetadata('roles', ['Administrador'])
   async eliminarUnoPost(
     @Param('id') id: string,
     @Res() res,
   ): Promise<void> {
     try {
-      await this._ownerService
-        .borrarUno(
-          +id,
-        );
-      res.redirect(`/owner/mostrar-owners?mensaje=Owner ID: ${id} eliminado`);
+
+      const hijosBorrados = await this.borrarCars(+id);
+      if(hijosBorrados){
+        await this._ownerService
+          .borrarUno(
+            +id,
+          );
+        res.redirect(`/owner/mostrar-owners?mensaje=Owner ID: ${id} eliminado`);
+      }else{
+        res.redirect(`/owner/mostrar-owners?mensaje=El Owner ID: ${id} no se puede borrar porque aun no se borran sus autos`);
+      }
+
     } catch (error) {
       console.error(error);
       res.redirect('/owner/mostrar-owners?error=Error del servidor');
     }
+  }
 
+  async borrarCars(id: number):Promise<boolean>{
+    const cars = await this._ownerService.buscarCars(+id);
+    try{
+      for (const car of cars) {
+         await this._carService.borrarUno(car.id);
+      }
+      return true;
+    }catch (e) {
+      console.log(e);
+      return false;
+
+    }
+  }
+
+  @Get('owner/mostrar-owners-cars/:idOwner')
+  async buscarAutos(
+    @Query('error') error: string,
+    @Res() res,
+    @Query('mensaje') mensaje: string,
+    @Param('idOwner') idOwner: string,
+  ){
+    const cars = await this._ownerService.buscarCars(+idOwner);
+    if(cars.length > 0){
+      res.render('car/show-search-car',
+        {
+          datos: {
+            error,
+            mensaje,
+            cars, // es igual a cars:cars
+            idOwner,
+          },
+        },
+      )
+    }else {
+      try {
+        res.redirect(
+          '/owner/mostrar-owners?mensaje=El usuario no tiene cars',
+        );
+      }catch (e) {
+        res.redirect(
+          '/owner/mostrar-owners?error=Error en el servidor',
+        );
+      }
+
+    }
 
 
   }
-
-
-
-
 
 }

@@ -11,13 +11,15 @@ import {
 } from 'class-validator';
 import { OwnerEntity } from '../owner/owner.entity';
 
-export class CarCreateDto {
+export class CarUpdateDto {
 
   @IsNotEmpty()
   @IsNumberString()
   @MinLength(3)
   @MaxLength(80)
   chassis: string;
+
+
 
   @IsNotEmpty()
   @IsString()
@@ -48,7 +50,5 @@ export class CarCreateDto {
 
   @IsNotEmpty()
   owner: OwnerEntity;
-
-
 
 }

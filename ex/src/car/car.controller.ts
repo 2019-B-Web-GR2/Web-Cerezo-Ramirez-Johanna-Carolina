@@ -2,33 +2,36 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
-  Put,
-  Query, Req, Res,
-  Session,
-  UnauthorizedException,
+  Query,
+  Res,
+  Session, SetMetadata,
+  UseGuards,
 } from '@nestjs/common';
-import {CarService} from './car.service';
-import {OwnerService} from '../owner/owner.service';
-import {CarEntity} from './car.entity';
-import { DeleteResult, Like } from 'typeorm';
-import * as Joi from '@hapi/joi';
-import {CarCreateDto} from './car.create-dto';
-import {validate} from 'class-validator';
+import { CarService } from './car.service';
+import { OwnerService } from '../owner/owner.service';
+import { CarEntity } from './car.entity';
+import { Like } from 'typeorm';
+import { CarCreateDto } from './car.create-dto';
+import { validate } from 'class-validator';
 //import {CarUpdateDto} from './car.update-dto';
-import { options } from 'tsconfig-paths/lib/options';
-import { tryCatch } from 'rxjs/internal-compatibility';
+import { CarUpdateDto } from './car.update-dto';
+import { DetailService } from '../detail/detail.service';
+import { HeaderEntity } from '../header/header.entity';
+import { DetailEntity } from '../detail/detail.entity';
+import { HeaderService } from '../header/header.service';
+import { RolesGuard } from '../roles.guard';
 
 
 // JS const Joi = require('@hapi/joi');
 
 @Controller('car')
+@UseGuards(RolesGuard)
 export class CarController {
   constructor(
-    private readonly _carService: CarService, private  _ownerService : OwnerService,
+    private readonly _carService: CarService, private  _ownerService: OwnerService, private _detailService: DetailService, private _headerService: HeaderService
   ) {
   }
 
@@ -61,35 +64,33 @@ export class CarController {
         {
           price: Like('%' + consultaCar + '%'),
         },
-        {
-          owner: Like('%' + consultaCar + '%'),
-        },
       ];
     }
     const cars = await this._carService.buscar(consultaServicio);
-    console.log(cars)
+    const carService = this._carService;
     res.render('car/show-search-car',
       {
         datos: {
           error,
           mensaje,
           cars, // es igual a cars:cars
+          carService
         },
       },
-
     );
   }
 
 
   @Post('crear')
+  @SetMetadata('roles', ['Administrador'])
   async crearUnCar(
     @Body() car: CarEntity,
-    @Body() bodyParams ,
+    @Body() bodyParams,
     @Res() res,
     @Session() session,
   ): Promise<void> {
     const carCreateDTO = new CarCreateDto();
-    carCreateDTO.chassis= car.chassis;
+    carCreateDTO.chassis = car.chassis;
     carCreateDTO.brand = car.brand;
     carCreateDTO.model = car.model;
     carCreateDTO.color = car.color;
@@ -98,7 +99,7 @@ export class CarController {
 
     const carOwner = await this._ownerService.encontrarUno(+bodyParams.idOwner)
     car.owner = carOwner;
-
+    carCreateDTO.owner = car.owner;
     const errores = await validate(carCreateDTO);
     if (errores.length > 0) {
       console.log(errores)
@@ -124,6 +125,7 @@ export class CarController {
   }
 
   @Get('create-car')
+  @SetMetadata('roles', ['Administrador'])
   rutaCrearCars(
     @Query('error') error: string,
     @Query('mensaje') mensaje: string,
@@ -138,7 +140,87 @@ export class CarController {
     );
   }
 
+  @Get('/edit-car/:idCar')
+  @SetMetadata('roles', ['Administrador'])
+  async rutaEditarCars(
+    @Query('error') error: string,
+    @Param('idCar') idCar: string,
+    @Res() res,
+  ) {
+    const consulta = {
+      where: {
+        id: idCar,
+      },
+    };
+    const carOwner = await this._carService.buscarOwner(+idCar);
+    try {
+      const arregloCars = await this._carService.encontrarUno(+idCar);
+
+      if (arregloCars) {
+        res.render(
+          'car/create-car',
+          {
+            datos: {
+              error, car: arregloCars, carOwner
+            },
+          },
+        );
+      } else {
+        res.redirect(
+          '/car/mostrar-cars?error=NO existe este car',
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      res.redirect(
+        '/car/mostrar-cars?error=Error editando car'
+      )
+    }
+
+  }
+
+
+  @Post(':id')
+  @SetMetadata('roles', ['Administrador'])
+  async actualizarUnCar(
+    @Body() car: CarEntity,
+    @Param('id') id: string,
+    @Body() bodyParams,
+    @Res() res,
+  ): Promise<void> {
+    const carUpdateDTO = new CarUpdateDto();
+    carUpdateDTO.chassis = car.chassis;
+    carUpdateDTO.brand = car.brand;
+    carUpdateDTO.model = car.model;
+    carUpdateDTO.color = car.color;
+    carUpdateDTO.year = car.year;
+    carUpdateDTO.price = +car.price;
+    const carOwner = await this._ownerService.encontrarUno(+bodyParams.idOwner);
+    car.owner = carOwner;
+    carUpdateDTO.owner = car.owner;
+
+    const errores = await validate(carUpdateDTO);
+    if (errores.length > 0) {
+      res.redirect(
+        '/car/editar-car/' + id + '?error=Car no validado',
+      );
+      console.log(errores)
+    } else {
+      await this._carService
+        .actualizarUno(
+          +id,
+          car,
+        );
+      res.redirect(
+        '/car/mostrar-cars?mensaje=El car ' + car.chassis + ' actualizado',
+      );
+    }
+
+  }
+
+
   @Post('delete/:id')
+  @SetMetadata('roles', ['Administrador'])
   async eliminarUnoPost(
     @Param('id') id: string,
     @Res() res,
@@ -154,7 +236,5 @@ export class CarController {
       res.redirect('/car/mostrar-cars?error=Error del servidor');
     }
   }
-
-
 
 }
